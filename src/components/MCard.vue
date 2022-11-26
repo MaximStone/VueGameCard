@@ -33,6 +33,10 @@ export default defineComponent({
       type: String as PropType<'px' | 'em'>,
       default: () => 'px'
     },
+    cornerRadius: {
+      type: Number,
+      default: () => 10
+    },
     width: {
       type: Number,
       default: () => 200
@@ -143,7 +147,8 @@ export default defineComponent({
       opacityShade: computed(() => `${Math.max(0, Math.min(1, (10 - zAxis.value) / 10))}`),
       shadeBlur: computed(() => zAxis.value > 0 ? `blur(${zAxis.value * 2}px)` : 'none'),
       calculatedWidth: computed(() => `${props.width}${props.sizeMetric}`),
-      calculatedHeight: computed(() => `${props.height}${props.sizeMetric}`)
+      calculatedHeight: computed(() => `${props.height}${props.sizeMetric}`),
+      calculatedBorderRadius: computed(() => `${props.cornerRadius}${props.sizeMetric}`)
     }
   }
 })
@@ -157,6 +162,7 @@ export default defineComponent({
   margin: -5em 0 0 -3.5em;
   transform-origin: center;
   z-index: -1;
+  border-radius: v-bind(calculatedBorderRadius);
 }
 
 .shade-blur {
@@ -223,36 +229,24 @@ export default defineComponent({
   margin: -5em 0 0 -3.5em;
 }
 
-.cub-1 .shape-body .ft {
-  transform: translateZ(0em);
-}
-
-.cub-1 .shape-body .bk {
-  transform: translateZ(0em) rotateY(180deg);
-}
-
 .cub-1 .shape-body .face {
   background-color: #FFFFFF;
 }
 
 .cub-1 .shape-body .ft {
+  transform: translateZ(0em);
   background-image: v-bind(frontImageUrl);
   background-color: #a76c6c;
+  border-radius: v-bind(calculatedBorderRadius);
+  width: v-bind(calculatedWidth);
 }
 
 .cub-1 .shape-body .bk {
+  transform: translateZ(0em) rotateY(180deg);
   background-image: v-bind(backImageUrl);
   background-color: #354b7e;
-}
-
-.cub-1 .shape-body .ft {
+  border-radius: v-bind(calculatedBorderRadius);
   width: v-bind(calculatedWidth);
-  margin-left: 0em;
-}
-
-.cub-1 .shape-body .bk {
-  width: v-bind(calculatedWidth);
-  margin-left: 0em;
 }
 
 .card-rotate {
