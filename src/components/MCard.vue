@@ -74,7 +74,7 @@ export default defineComponent({
     const turnCard = async () => {
       if (isMoving.value) return
 
-      const ROTATION_DELAY = 100
+      const ROTATION_DELAY = props.openCloseAnimationDuration / 3.5
 
       let dTimeZ1 = 0
       let dTimeZ2 = 0
@@ -145,7 +145,7 @@ export default defineComponent({
       rotationOutsize: computed(() => `translateZ(${zAxis.value * 50}px)`),
       rotationShade: computed(() => `scaleX(${Math.round(Math.abs(Math.cos(rotateY.value * Math.PI / 180) * 100)) / 100})`),
       opacityShade: computed(() => `${Math.max(0, Math.min(1, (10 - zAxis.value) / 10))}`),
-      shadeBlur: computed(() => zAxis.value > 0 ? `blur(${zAxis.value * 2}px)` : 'none'),
+      shadeBlur: computed(() => zAxis.value > 0 ? `blur(${zAxis.value * 3}px)` : 'none'),
       calculatedWidth: computed(() => `${props.width}${props.sizeMetric}`),
       calculatedHeight: computed(() => `${props.height}${props.sizeMetric}`),
       calculatedBorderRadius: computed(() => `${props.cornerRadius}${props.sizeMetric}`)
