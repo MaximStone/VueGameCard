@@ -1,10 +1,10 @@
 {
-  "name": "mvuecardt",
-  "version": "0.1.0",
-  "private": true,
+  "name": "vue-game-card",
+  "version": "0.3.1",
+  "author": "Maxim Kosterin",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --inline-vue --name MCard src/components/MCard.vue",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
