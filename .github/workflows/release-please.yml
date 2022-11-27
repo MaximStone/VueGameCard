@@ -11,11 +11,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          registry-url: https://registry.npmjs.org
       - run: npm i -g @vue/cli
       - run: npm ci --legacy-peer-deps
       - run: npm run test:unit
       - run: npm run build
+      - run: npm whoami
       - run: npm run release
         env:
           NPM_TOKEN: ${{secrets.npm_token}}
