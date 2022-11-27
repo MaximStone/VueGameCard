@@ -14,8 +14,9 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm i -g @vue/cli
       - run: npm ci --legacy-peer-deps
+      - run: npm run test:unit
       - run: npm run build
-      - run: semantic-release
+      - run: npm run release
         env:
           NPM_TOKEN: ${{secrets.npm_token}}
 

@@ -9,8 +9,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --inline-vue --name MCard src/components/MCard.vue",
-    "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "test:unit": "vue-cli-service test:unit --passWithNoTests",
+    "lint": "vue-cli-service lint",
+    "release": "semantic-release"
   },
   "release": {
     "branches": ["main"]
@@ -42,7 +43,7 @@
     "lint-staged": "13.0.4",
     "sass": "1.56.1",
     "sass-loader": "13.2.0",
-    "semantic-release": "^19.0.5",
+    "semantic-release": "19.0.5",
     "ts-jest": "27.0.0",
     "typescript": "4.9.3"
   },
