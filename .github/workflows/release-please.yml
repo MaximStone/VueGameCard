@@ -12,8 +12,8 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm ci --legacy-peer-deps
       - run: npm i -g @vue/cli
+      - run: npm ci --legacy-peer-deps
       - run: vue-cli-service test:unit --passWithNoTests
       - run: npm run build
       - run: semantic-release
