@@ -1,29 +1,23 @@
-# mvuecardt
+# Vue game card component
 
-## Project setup
-```
-yarn install
-```
+When you want to build or prototype your card game, you would need to make game logic and some simple visual objects. 
+Vue game card component is simple vue-component to simplify the development process.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+It includes css animation with 3D flipping and shade.
 
-### Compiles and minifies for production
+## How to install
+
 ```
-yarn build
+npm install vue-game-card
 ```
 
-### Run your unit tests
-```
-yarn test:unit
-```
+## How to use
 
-### Lints and fixes files
-```
-yarn lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+## Contributing
+- Fork the repository 
+- Run `npm install --legacy-peer-deps` 
+- Make the change
+- Create PR to the `main` branch
