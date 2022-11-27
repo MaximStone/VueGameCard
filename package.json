@@ -12,6 +12,9 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
+  "release": {
+    "branches": ["main"]
+  },
   "dependencies": {
     "core-js": "3.26.1",
     "vue": "3.2.45"
