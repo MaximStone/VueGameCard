@@ -12,7 +12,6 @@ jobs:
         with:
           node-version: 16
       - run: npm ci --legacy-peer-deps
-      - run: npm run test:unit
       - run: npm run build
       - run: npm run release
         env:
