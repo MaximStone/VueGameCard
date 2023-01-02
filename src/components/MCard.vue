@@ -20,8 +20,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref, Ref } from 'vue'
+import {computed, defineComponent, PropType, reactive, ref, Ref, watch} from 'vue'
 import { easeInOutCubic } from '@/easing'
+import {CardState} from "@/types";
 
 export default defineComponent({
   name: 'MCard',
@@ -29,21 +30,35 @@ export default defineComponent({
     initiallyOpened: Boolean,
     frontImage: String,
     backImage: String,
+    enabled: Boolean,
+    reactiveState: {
+      type: Object as PropType<CardState>,
+      default: () => {
+        return reactive({
+          cardId: Math.random() * 10000,
+          animated: false,
+          hidden: false,
+          model: {},
+          opened: false
+        }) as CardState
+      }
+    },
+    cardId: [Number, String] as PropType<number | string>,
     sizeMetric: {
       type: String as PropType<'px' | 'em'>,
       default: () => 'px'
     },
     cornerRadius: {
       type: Number,
-      default: () => 10
+      default: () => 6
     },
     width: {
       type: Number,
-      default: () => 200
+      default: () => 150
     },
     height: {
       type: Number,
-      default: () => 300
+      default: () => 250
     },
     openCloseAnimationDuration: {
       type: Number,
@@ -58,7 +73,8 @@ export default defineComponent({
       default: () => 300
     }
   },
-  setup (props) {
+  emits: ["open", "open:before", "close"],
+  setup (props, { emit }) {
     const MAX_Z_AXIS = 2
     const D_TIME = 8
 
@@ -116,23 +132,63 @@ export default defineComponent({
     }
 
     const openCard = async () => {
-      if (isOpened.value) return
+      if (isOpened.value) return;
 
-      await turnCard()
-      isOpened.value = true
+      emit("open:before", props.reactiveState);
+
+      if (props.reactiveState) {
+        props.reactiveState.animated = true;
+      }
+
+      await turnCard();
+
+      // animation is finished
+      if (props.reactiveState) {
+        props.reactiveState.animated = false;
+      }
+
+      isOpened.value = true;
+      if (props.reactiveState) {
+        props.reactiveState.opened = true;
+      }
+
+      emit("open", props.reactiveState);
     }
 
     const closeCard = async () => {
-      if (!isOpened.value) return
+      if (!isOpened.value) return;
 
-      await turnCard()
-      isOpened.value = false
+      // animation is starting
+      if (props.reactiveState) {
+        props.reactiveState.animated = true;
+      }
+
+      await turnCard(); // animation
+
+      // animation is finished
+      if (props.reactiveState) {
+        props.reactiveState.animated = true;
+      }
+
+      isOpened.value = false;
+      if (props.reactiveState) {
+        props.reactiveState.opened = false;
+      }
+
+      emit("close", props.reactiveState);
     }
 
     const cardClickHandler = () => {
-      if (isOpened.value) closeCard()
-      else openCard()
+      if (!props.enabled) return;
+      if (isOpened.value) closeCard();
+      else openCard();
     }
+
+    watch(props.reactiveState as Record<string, any>, () => {
+      // console.log('props.reactiveState changed', props.reactiveState)
+      if (isOpened && !props.reactiveState?.opened) closeCard();
+      if (!isOpened && props.reactiveState?.opened) openCard();
+    });
 
     return {
       cardClickHandler,
@@ -142,8 +198,21 @@ export default defineComponent({
       frontImageUrl: `url(${props.frontImage})`,
       backImageUrl: `url(${props.backImage}`,
       rotation: computed(() => `rotateX(${rotateX.value}deg) rotateY(${rotateY.value}deg)`),
-      rotationOutsize: computed(() => `translateZ(${zAxis.value * 50}px)`),
-      rotationShade: computed(() => `scaleX(${Math.round(Math.abs(Math.cos(rotateY.value * Math.PI / 180) * 100)) / 100})`),
+      rotationOutsize: computed(() =>
+        zAxis.value > 0 ? `translateZ(${zAxis.value * 50}px)` : "none"
+      ),
+      rotationShade: computed(() => {
+        const scaleValue =
+          Math.round(
+            Math.abs(Math.cos((rotateY.value * Math.PI) / 180) * 100)
+          ) / 100;
+
+        if (scaleValue > 1) {
+          `scaleX(${scaleValue})`;
+        }
+
+        return "none";
+      }),
       opacityShade: computed(() => `${Math.max(0, Math.min(1, (10 - zAxis.value) / 10))}`),
       shadeBlur: computed(() => zAxis.value > 0 ? `blur(${zAxis.value * 3}px)` : 'none'),
       calculatedWidth: computed(() => `${props.width}${props.sizeMetric}`),
@@ -159,7 +228,6 @@ export default defineComponent({
   background-color: rgba(0, 0, 0, 0.4);
   width: v-bind(calculatedWidth);
   height: v-bind(calculatedHeight);
-  margin: -5em 0 0 -3.5em;
   transform-origin: center;
   z-index: -1;
   border-radius: v-bind(calculatedBorderRadius);
@@ -169,8 +237,20 @@ export default defineComponent({
   filter: v-bind(shadeBlur);
 }
 
-.shape, .face, .face-wrapper, .shade-element, .shape-body, .card-container {
+.shape,
+.face,
+.face-wrapper,
+.shade-element,
+.shape-body {
   position: absolute;
+}
+
+.shape,
+.face,
+.face-wrapper,
+.shade-element,
+.shape-body,
+.card-container {
   transform-style: preserve-3d;
 }
 
@@ -195,7 +275,7 @@ export default defineComponent({
 .face-wrapper .face {
   left: 100%;
   width: 100%;
-  height: 100%
+  height: 100%;
 }
 
 .photon-shader {
@@ -203,7 +283,7 @@ export default defineComponent({
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%
+  height: 100%;
 }
 
 [class*='cuboid'] .shape-body {
@@ -226,11 +306,10 @@ export default defineComponent({
   opacity: 1;
   width: v-bind(calculatedWidth);
   height: v-bind(calculatedHeight);
-  margin: -5em 0 0 -3.5em;
 }
 
 .cub-1 .shape-body .face {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .cub-1 .shape-body .ft {
@@ -244,9 +323,21 @@ export default defineComponent({
 .cub-1 .shape-body .bk {
   transform: translateZ(0em) rotateY(180deg);
   background-image: v-bind(backImageUrl);
-  background-color: #354b7e;
+  background-color: #114659;
   border-radius: v-bind(calculatedBorderRadius);
   width: v-bind(calculatedWidth);
+  transition: background-color 100ms;
+}
+.cub-1 {
+  &:hover {
+    .shape-body .bk {
+      background-color: #15546e;
+      .back-path {
+        stroke: #145267;
+        fill: #0c4457;
+      }
+    }
+  }
 }
 
 .card-rotate {
@@ -260,5 +351,10 @@ export default defineComponent({
 }
 .card-rotate-outside {
   transform: v-bind(rotationOutsize);
+}
+.card-container {
+  caret-color: transparent;
+  cursor: pointer;
+  transition: opacity 500ms;
 }
 </style>

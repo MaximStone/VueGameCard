@@ -10,7 +10,7 @@ export default defineConfig({
   build: {
     lib: {
       // Could also be a dictionary or array of multiple entry points
-      entry: resolve(__dirname, 'lib/main.js'),
+      entry: resolve(__dirname, 'lib/main.ts'),
       name: 'VueGameCard',
       // the proper extensions will be added
       fileName: 'vue-game-card',

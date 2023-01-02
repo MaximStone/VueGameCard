@@ -1,13 +1,17 @@
 <template>
   <div class="scene">
+    <div class="scene-grid">
     <MCard
         v-for="index in 9"
         :key="index"
-        :style="{ top: `${(CARD_HEIGHT + 10) * ((index + 1) % 3) + 50}px`, left: `${(CARD_WIDTH + 10) * Math.ceil((index) / 3)}px` }"
         :front-image="face"
         :back-image="back"
+        :width="CARD_WIDTH"
+        :height="CARD_HEIGHT"
         :open-close-animation-duration="500"
+        enabled
     />
+  </div>
   </div>
 
 </template>
@@ -16,8 +20,8 @@
 import { defineComponent } from 'vue'
 import MCard from '@/components/MCard.vue'
 
-const CARD_WIDTH = 200
-const CARD_HEIGHT = 300
+const CARD_WIDTH = 150
+const CARD_HEIGHT = 250
 
 import face from '@/assets/gloom.png'
 import back from '@/assets/back.jpg'
@@ -57,17 +61,24 @@ export default defineComponent({
   background: transparent;
   font-size: 100%;
 }
-.scene {
-  position: absolute;
-  transform-style: preserve-3d;
-}
 
 .scene {
-  width: 50em;
-  height: 50em;
-  top: 50%;
-  left: 50%;
-  margin: -25em 0 0 -25em;
+  width: 100%;
+  height: 100%;
   background-color: #809a80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scene-grid {
+  position: relative;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+
+  display: grid;
+  grid-gap: 40px;
+  grid-template-columns: repeat(3, 150px);
+  grid-template-rows: repeat(3, 250px);
 }
 </style>
