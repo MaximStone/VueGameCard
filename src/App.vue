@@ -4,7 +4,7 @@
     <MCard
         v-for="index in 9"
         :key="index"
-        :front-image="face"
+        :front-image="index % 2 === 0 ? face1 : face2"
         :back-image="back"
         :width="CARD_WIDTH"
         :height="CARD_HEIGHT"
@@ -23,7 +23,8 @@ import MCard from '@/components/MCard.vue'
 const CARD_WIDTH = 150
 const CARD_HEIGHT = 250
 
-import face from '@/assets/gloom.png'
+import face1 from '@/assets/gloom.png'
+import face2 from '@/assets/warlock.png'
 import back from '@/assets/back.jpg'
 
 export default defineComponent({
@@ -35,7 +36,8 @@ export default defineComponent({
     return {
       CARD_WIDTH,
       CARD_HEIGHT,
-      face,
+      face1,
+      face2,
       back
     }
   }

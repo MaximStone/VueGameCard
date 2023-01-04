@@ -223,7 +223,7 @@ export default defineComponent({
 })
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .shade-element {
   background-color: rgba(0, 0, 0, 0.4);
   width: v-bind(calculatedWidth);
