@@ -1,8 +1,10 @@
 # Vue 3D CSS Game Card SFC
 
-The fastest way to start building the game of your dream!
+The fastest way to start building the card game of your dream!
 
 [See demo](https://maximstone.github.io/VueGameCard/)
+
+Component works for with vue3. Hasn't been tested with Vue2.
 
 ## Getting started
 
