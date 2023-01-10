@@ -4,7 +4,7 @@ The fastest way to start building the card game of your dream!
 
 [See demo](https://maximstone.github.io/VueGameCard/)
 
-Component works for with vue3. Hasn't been tested with Vue2.
+Component works with vue3. Hasn't been tested with vue2.
 
 ## Getting started
 
