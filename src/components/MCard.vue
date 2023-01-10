@@ -1,19 +1,19 @@
 <template>
   <div class="card-container" @click="cardClickHandler">
 
-  <div class="shape cuboid-1 cub-1 card-rotate-outside">
-    <div class="shape-body card-rotate">
-      <div class="face ft">
-        <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.15);"></div>
-      </div>
-      <div class="face bk">
-        <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.15);"></div>
+    <div class="shape cuboid-1 cub-1 card-rotate-outside">
+      <div class="shape-body card-rotate">
+        <div class="face ft">
+          <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.15);"></div>
+        </div>
+        <div class="face bk">
+          <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.15);"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="shade-rotate shade-element shade-blur shade-opacity">
-  </div>
+    <div class="shade-rotate shade-element shade-blur shade-opacity">
+    </div>
 
   </div>
 
@@ -21,8 +21,8 @@
 
 <script lang="ts">
 import {computed, defineComponent, PropType, reactive, ref, Ref, watch} from 'vue'
-import { easeInOutCubic } from '@/easing'
-import {CardState} from "@/types";
+import {easeInOutCubic} from '../easing'
+import {CardState} from '../types';
 
 export default defineComponent({
   name: 'MCard',
@@ -30,7 +30,10 @@ export default defineComponent({
     initiallyOpened: Boolean,
     frontImage: String,
     backImage: String,
-    enabled: Boolean,
+    enabled: {
+      type: Boolean,
+      default: true
+    },
     reactiveState: {
       type: Object as PropType<CardState>,
       default: () => {
@@ -74,7 +77,7 @@ export default defineComponent({
     }
   },
   emits: ["open", "open:before", "close"],
-  setup (props, { emit }) {
+  setup(props, {emit}) {
     const MAX_Z_AXIS = 2
     const D_TIME = 8
 
@@ -328,10 +331,12 @@ export default defineComponent({
   width: v-bind(calculatedWidth);
   transition: background-color 100ms;
 }
+
 .cub-1 {
   &:hover {
     .shape-body .bk {
       background-color: #15546e;
+
       .back-path {
         stroke: #145267;
         fill: #0c4457;
@@ -343,15 +348,19 @@ export default defineComponent({
 .card-rotate {
   transform: v-bind(rotation);
 }
+
 .shade-opacity {
   opacity: v-bind(opacityShade);
 }
+
 .shade-rotate {
   transform: v-bind(rotationShade);
 }
+
 .card-rotate-outside {
   transform: v-bind(rotationOutsize);
 }
+
 .card-container {
   caret-color: transparent;
   cursor: pointer;

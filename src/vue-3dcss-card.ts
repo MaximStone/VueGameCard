@@ -1,3 +1,3 @@
-import MCard from "@/components/MCard.vue";
+import MCard from "../src/components/MCard.vue";
 
 export default MCard
