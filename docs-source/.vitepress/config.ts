@@ -4,7 +4,7 @@ export default defineConfig({
   lang: 'en-US',
   title: 'Vue 3D CSS Card',
   description: 'The most important thing in your web project',
-  base: '/',
+  base: '/VueGameCard/',
   outDir: '../docs',
   themeConfig: {
     // Type is `DefaultTheme.Config`
